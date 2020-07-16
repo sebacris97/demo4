@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<br>
+
+<div class="row justify-content-center">
+
+<div class="col-md-5">
+
+<h3 align="center">Adelantos</h3>
+<div  class="container-fluid card pre-scrollable" style="overflow-y:auto;" align="center">
+	{% if trailers %}
+		<br>
+		{% for trailer in trailers %} 
+			<div class="card">
+				<div class="row">
+					<div class="col-12">
+					<small class="text-muted float-right">{{trailer.creacion}}</small>
+					</div>
+				</div>
+				<div class="row">
+					
+					<div class="col-12"> <h4> {{trailer.titulo}} </h4>	
+						<img class="img-fluid img-thumbnail" src="{{trailer.get_imagen}}" style="width:150px;height:200px;"
+						onerror="this.onerror=null;this.src='{{MEDIA_URL}}/default.jpg';">
+						
+						<p>{{trailer.texto|linebreaks}}</p>
+					</div>
+				</div>
+			</div>
+		{% endfor %} <br>
+	{% else %}
+		<small class="text-muted">No hay adelantos</small>
+	{% endif %}
+</div>
+
+
+</div> <!--fin columna-->
+
+
+<div class="col-md-5">
+
+<h3 align="center">Novedades</h3>
+<div  class="container-fluid card pre-scrollable" style="overflow-y:auto;" align="center">
+	{% if novedades %}
+		{% for novedad in novedades %}
+			<br>
+			<div class="card">
+				 <small class="text-muted">{{novedad.creacion}}</small>
+				<h4 align="center"> {{novedad.titulo}} </h4>
+				<p>{{novedad.texto|linebreaks}}</p>
+			</div>
+		{% endfor %} <br>
+	{% else %}
+		<small class="text-muted">No hay novedades</small>
+	{% endif %}
+</div>
+
+</div> <!--fin columna-->
+</div> <!--fin fila-->
+
+
+<br><br><br>
+
+
+<div class="row">
+<div class="col-12  col-sm-12">
+
+{% if user.is_authenticated %}
+	<h2 align="center">	Bienvenido <b>{{nombre_perfil}}</b></h2>
+{% endif %}
+
+</div>      <!--fin fila-->
+</div>      <!--fin columna-->
+
+
+
+
+{% endblock %}
+

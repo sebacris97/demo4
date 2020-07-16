@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<title>Datos de Usuario</title>
+
+<div class="row"><div class="col-md-5 mx-auto">
+
+<br>
+
+<h3>Datos de usuario</h3>
+
+<br>
+
+ <div class="form-group">
+
+    <label for="ex1">Nombre</label>
+    <input class="form-control" readonly id="ex1" type="text" value="{{ user.first_name }}">
+
+<br>
+
+    <label for="ex2">Apellido</label>
+    <input class="form-control" id="ex2" readonly type="text" value="{{ user.last_name }}">
+
+<br>
+
+    <label for="ex3">Email</label>
+    <a class="form-control"  id="ex3" readonly type="text">{{ user.email }}</a>
+
+<br>
+
+    <label for="ex4">Fecha de nacimiento</label>
+    <a class="form-control"  id="ex4" type="date" readonly>{{ usuario.fecha_de_nacimiento }}</a>
+
+<br>
+
+{% if usuario.tarjeta != "" %}
+    <label for="ex4">Tarjeta</label>
+    <a class="form-control"  id="ex4" type="text" readonly>{{ usuario.tarjeta }}</a>
+{% endif %}
+
+</div>
+
+</div>
+
+
+<div class="col-md-5 mx-auto">
+
+<br>
+
+<h3>Configuracion de la cuenta</h3>
+
+<br>
+
+<style>
+.list-group a{text-align:center;}
+h3 {text-align:center;}
+</style>
+
+<div class="list-group col-md-6 mx-auto">
+
+    <a class="list-group-item list-group-item-action list-group-item-info" href="/modificarDatos" role="button">Modificar Datos</a>
+
+      {% if not usuario.is_premium %}
+
+        <a class="list-group-item list-group-item-action list-group-item-warning" href="/premium" role="button">Cambiar a Premium</a>
+
+      {% else %}
+
+        <a class="list-group-item list-group-item-action list-group-item-success"" href="/pagarSuscripcion" role="button">Pagar Suscripcion</a>
+
+        <a class="list-group-item list-group-item-action list-group-item-warning" href="/normal" role="button">Cancelar Suscripcion</a>
+
+      {% endif %}
+
+
+    <a class="list-group-item list-group-item-action list-group-item-danger" href="/eliminarDatos" role="button">Eliminar Cuenta</a>
+
+</div>
+
+</div>
+
+</div>
+
+<br>
+
+{% endblock %}

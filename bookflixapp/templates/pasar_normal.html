@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+<title>Normal</title>
+
+{% block content %}
+<div>
+    <h1 align="center">Pasar a Normal</h1>
+</div>
+{% if cant == 1 %}
+    <div class="col">
+    <h4>Usted ahora es usuario normal</h4>
+      <a class="btn btn-warning" href="/" role="button">Home</a>
+    </div>
+{% endif %}
+{% endblock %}

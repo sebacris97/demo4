@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+
+<div class="col-md-6 mx-auto">
+
+<br>
+<h2>Iniciar sesión</h2>
+<br>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+  <!--<div class="checkbox">
+    <label><input type="checkbox"> Recordarme</label> 
+  </div>-->
+
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+
+</form>
+
+
+{% endblock %}

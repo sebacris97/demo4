@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<title>Modificar datos</title>
+
+<div class="row">
+<div class="col-md-6 mx-auto">
+
+<br>
+
+<h2>Modificar datos</h2>
+
+<br>
+
+<div class="form-group well well-sm">
+  <form method="POST">
+     {% csrf_token %}
+     {{ form.as_p }}
+     {{ p_form.as_p }}
+     <br>
+     <button class="btn btn-primary" type="submit">Guardar</button>
+  </form>
+</div>
+
+</div>
+</div>
+
+<script>
+var fecha = '{{ usuario.fecha_de_nacimiento|date:"Y-m-d" }}'
+  fecha_de_nacimiento = document.getElementById("id_fecha_de_nacimiento");
+  fecha_de_nacimiento.setAttribute("value",fecha);
+</script>
+<script src="{% static 'js/modify.js' %}"></script>
+
+{% endblock %}

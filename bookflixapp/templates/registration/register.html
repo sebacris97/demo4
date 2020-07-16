@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="row">
+<div class="col-md-6 mx-auto">
+
+<br>
+
+<h2>Registrar usuario</h2>
+
+<br>
+
+<div class="form-group well well-sm">
+  <form method="POST">
+     {% csrf_token %}
+     {{ form.as_p }}
+
+    <label for="exampleFormControlSelect1">Tipo de membresia</label>
+    <select class="form-control" name="membresia" id="exampleFormControlSelect1">
+      <option>Normal (Solo pueden crearse 2 perfiles)</option>
+      <option>Premium (Pueden crearse hasta 4 perfiles)</option>
+    </select>
+
+     <br>
+     <button class="btn btn-primary" type="submit">Registrar</button>
+  </form>
+</div>
+
+</div>
+</div>
+
+
+
+  <script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+
+ 
+
+<br>
+
+{% endblock %}

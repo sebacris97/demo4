@@ -1,0 +1,26 @@
+{% load static %}
+
+<div class="modal fade" id="editarComentario-modal" tabindex="-1" role="dialog" aria-labelledby="editarComentario-modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{comentario_form.texto.label}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <form method="POST">
+              {% csrf_token %}
+              <div class="modal-body">
+                  {{comentario_form.texto}}
+              </div>
+              <div class="modal-footer">
+                  <input class="pk" name="modificar" type="hidden"/>
+                  <input class="btn btn-success" type="submit" value="Enviar"/> 
+              </div>
+          </form>
+    </div>
+  </div>
+</div>
+
+<script text="javascript" src="{% static 'js/modals/ver_capitulos/editarComentario-modal.js' %}"></script>

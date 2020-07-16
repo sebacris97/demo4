@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<br>
+
+<h2>{{libro}}</h2>
+
+<br>
+
+
+<div class="row">
+<div class="col-md-12 mx-auto">
+
+
+<table class="table">
+
+	<tr>
+		<td>NUMERO DE CAPITULO</td>
+		<td>PAGINAS</td>
+	</tr>
+
+	{% for capitulo in capitulos %}
+
+	<tr>
+		<td><a href="{% url 'action' capitulo.libro.id capitulo.id %}">Capitulo {{capitulo.numero}}</a></td>
+
+		<td>{{capitulo.nropaginas}}</td>
+	</tr>
+
+	{% endfor %}
+
+</table>
+
+</div>
+</div>
+
+<br>
+
+<hr>
+
+<script text="javascript" src="{% static 'js/desaparecer.js' %}"></script>
+<link href="{% static 'css/ver_capitulos.css' %}" rel="stylesheet" type="text/css"/>
+
+     {% if messages %}
+          <div class="mensaje">
+               <div class="alert-success">
+                    {% for message in messages %}
+                         <p style="text-align:center;">{{ message }}</p>
+                    {% endfor %}
+               </div>
+               <hr>
+          </div>
+     {% endif %}
+
+
+<div class="row">
+	<div class="col-md-6 mx-auto">
+		<h4>Comentarios:</h4>
+	</div>
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-md-6 mx-auto">
+
+                        {% if comentarios %}
+                                {% for comentario in comentarios %}
+                                        <div class="card">
+                                             <div class="row">
+                                                <div class="col-md-12">
+
+			     {% if perfil_actual.id == comentario.perfil.id or request.user.is_superuser %}
+
+			         <form method="POST">
+
+			              {% csrf_token %}
+
+				   <button class="float-right boton" data-val2="{{comentario.id}}" data-toggle="modal" data-target="#borrarComentario-modal" type="button"/>
+				   	<i class="fa fa-trash" aria-hidden="true"></i>
+				   </button>
+
+			         </form>
+
+			         <form method="POST">
+
+			              {% csrf_token %}
+
+				   <button class="float-right boton" data-val="{{comentario.id}}" data-toggle="modal" data-target="#editarComentario-modal" type="button"/>
+				   	<i class="fa fa-pencil" aria-hidden="true"></i>
+				   </button>
+
+			         </form>
+
+			         {% include 'modals/ver_capitulos/editarComentario-modal.html' %}
+			         {% include 'modals/ver_capitulos/borrarComentario-modal.html' %}
+
+
+			     {% endif %}
+
+			     <small style="padding-left: 7px;" class="text-muted float-left">{{comentario}}</small>
+
+                                                </div>
+                                             </div>
+                                             <div class="row">
+                                                <div class="col-md-12">
+			    <div style="padding:7px;">
+                                                         {{comentario.texto | linebreaks}}
+			    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                {% endfor %}
+
+                        {% else %}
+		<br>
+                                <h5>No hay comentarios, se el primero</h3>
+		<br>
+                        {% endif %}
+
+                        <br>
+
+
+
+                        <div class="row">
+                                <div class="col-md-12">
+                                        <form method="POST">
+                                             {% csrf_token %}
+                                             {{comentario_form}}
+                                             <br>	
+                                             <input name="enviar" class="btn btn-success float-right" type="submit" value="Enviar"/>
+                                        </form>
+                                </div>
+                        <div>
+
+
+
+	</div>
+</div>
+
+
+<br>
+
+
+{% endblock %}

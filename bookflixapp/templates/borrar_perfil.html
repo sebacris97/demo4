@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<br>
+
+<title>Eliminar Perfil</title>
+
+{% if cant > 1 and cant < 10 %}
+    <div style="text-align:center;">
+        <h3>Selecciona el perfil a eliminar.</h3>
+        <form method="POST">{% csrf_token %}
+            <select id="selector_perfil">
+            {% for perfil in perfiles %}
+                <option {% if perfil.selected %}selected{% endif %} value="{{perfil.id}}">{{perfil}}</option>
+            {% endfor %}
+            </select>
+
+<br><br>
+
+<button id="llamador" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Eliminar</button>
+
+    </div>
+
+{% else %}
+    {% if cant == 10 %}
+    <h2>Necesita eliminar perfiles para convertirse en usuario normal</h2>
+        <div style="text-align:center;">
+        <h3>Selecciona el perfil a eliminar.</h3>
+        <form method="POST">{% csrf_token %}
+            <select id="selector_perfil">
+            {% for perfil in perfiles %}
+                <option {% if perfil.selected %}selected{% endif %} value="{{perfil.id}}">{{perfil}}</option>
+            {% endfor %}
+            </select>
+
+<br><br>
+
+<button id="llamador" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Eliminar</button>
+
+    </div>
+    {% else %}
+    {% if cant == 0 %}
+        <h2>El perfil ha sido eliminado correctamente</h2>
+        <a class="btn btn-primary" href="/" role="button">Volver</a>
+    {% else %}
+        <h2>Tiene que haber mas de un perfil para poder eliminar</h2>
+    {% endif %}
+{% endif %}
+{% endif %}
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Eliminar Perfil</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta seguro que quiere eliminar este perfil?</p>
+      </div>
+      <div class="modal-footer">
+	<form method="POST"> {% csrf_token %}
+        	     <input type="hidden" class="id_perfil" name="nombre" />
+        	     <input type="submit" class="btn btn-danger" value="Eliminar">
+        	     <a href="/verDatos" type="button" class="btn btn-primary">Cancelar</a>
+	</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+$('#exampleModalCenter').on('show.bs.modal', function (event) {
+
+var id = $('#selector_perfil option').filter(':selected').val();
+
+$('#llamador').data('val',id); //setter
+
+  var myVal = $(event.relatedTarget).data('val');
+  $(this).find(".id_perfil").val(myVal);
+});
+
+</script>
+
+
+
+
+{% endblock %}

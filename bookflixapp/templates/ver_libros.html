@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+<br>
+
+<div class="row-fluid">
+<div class="col-md-6 mx-auto card form-group">
+
+                <br>
+
+	<form>
+
+		<div class="row">
+		    <div class="col md-12">
+			<label for="id_titulo__icontains">Titulo: </label> {{filter.form.titulo__icontains}}
+		    </div>
+		</div>
+
+		<br>
+
+		<div class="row">
+		    <div class="col md-12">
+			<label for="id_autor">Autor:</label> {{filter.form.autor}}
+		    </div>
+		</div>
+
+		<br>
+
+		<div class="row">
+		    <div class="col md-12">
+			<label for="id_editorial">Editorial:</label> {{filter.form.editorial}}
+		    </div>
+		</div>
+
+		<br>
+
+		<div class="row">
+		    <div class="col md-12">
+			<label for="id_genero">Genero:</label> {{filter.form.genero}}
+		    </div>
+		</div>
+
+		<!--<br>
+
+		<div class="row">
+		    <div class="col md-12">
+			<label for="id_ordering">Lecturas: </label> {{filter.form.ordering}}
+		    </div>
+		</div>-->
+
+		<br>
+
+		<div class="row">
+		    <div class="col md-12">
+			<label for="id_agnoedicion">Año: </label> {{filter.form.agnoedicion}}
+		    </div>
+		</div>
+
+		<br>
+
+		<div class="row">
+		    <div class="col md-12">
+			<button id="buscar-btn" class="btn btn-primary" type='submit'>Buscar</button>
+		    </div>
+		</div>
+
+	</form>
+                <br>
+</div> 
+</div>
+
+
+<br><br>
+
+
+<div class="row-fluid">
+
+
+    <div class="well well-sm">
+        <strong>Mostar: </strong>
+        <div class="btn-group">
+            <a href="#" id="list" class="btn btn-default btn-sm">
+               <span class="fa fa-th-list"></span>Lista
+            </a> 
+            <a href="#" id="grid" class="btn btn-default btn-sm">
+                <span class="fa fa-th"></span>Cuadricula
+            </a>
+
+	<form>
+	{{filter.form.ordering}}
+	</form>
+
+        </div>
+    </div> 
+
+
+<script>
+  s = document.getElementById("id_ordering");
+  s.options[0].remove();
+  s.setAttribute("onchange","this.form.submit()");
+</script>
+
+
+<br>
+
+
+	{% if filter.qs %}
+
+<div id="products" class="row view-group">
+
+
+                {% for libro in filter.qs %}
+                <div class="item col-xs-4 col-lg-4">
+                    <div class="thumbnail card" style="width:100%">
+                        <div class="img-event"> 
+	            <a href="/verCapitulos/{{libro.id}}">
+                            <img class="group list-group-image img-fluid" style="width:100%;height:100%;" src="{{libro.get_imagen}}" 
+		onerror="this.onerror=null;this.src='{{MEDIA_URL}}/default.jpg';" alt="" />
+	            </a>
+                        </div>
+                        <div class="caption card-body" style="text-transform:capitalize;">
+
+
+	            
+		<h4 class="group card-title inner list-group-item-heading">
+	            	    <form method="POST">
+		      {% csrf_token %}
+		      <button type="submit" name="{{libro.id}}" style="outline:none;">
+			{% if libro.id in favoritos %}
+				<i class="fa fa-star" aria-hidden="true"></i>
+			{% else %}
+				<i class="fa fa-star-o" aria-hidden="true"></i>
+			{% endif %}
+		      </button>
+		      <a href="/verCapitulos/{{libro.id}}"> {{libro.titulo}} </a>
+	            	    </form> 
+		</h4>
+
+<style>
+button{
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+</style>
+
+                            <p class="group inner list-group-item-text">
+                                <strong>AUTOR: </strong>{{libro.autor}}</p>
+                            <p class="group inner list-group-item-text">
+                                <strong>EDITORIAL: </strong>{{libro.editorial}}</p>
+                            <p class="group inner list-group-item-text">
+                                <strong>GENERO: </strong>{% for genero in libro.genero.all %} {{genero}}, {% endfor %}</p>
+                            <p class="group inner list-group-item-text">
+                                <strong>FECHA DE EDICION: </strong>{{libro.agnoedicion}}</p>
+                            <p class="group inner list-group-item-text">
+                                <strong>ISBN: </strong>{{libro.isbn}}</p>
+                            <p style="text-transform:none;" class="group inner list-group-item-text">
+                                <strong>SINOPSIS: </strong>{{libro.get_texto}}</p>
+
+
+                        </div>
+                    </div>
+                </div>
+                
+            {% endfor %}
+</div>
+
+		
+	{% else %}
+		<br><br>
+		<h3 style="text-align:center;">No hay ninguna coincidencia<h3>
+	{% endif %}
+
+
+
+<link href='{% static "css/ver_libros.css" %}' rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="{% static 'js/select_picker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ver_libros.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/filter.js' %}"></script>
+
+
+
+
+
+
+
+
+
+{% endblock content %}
+
+

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<br>
+
+<title>Seleccionar Perfil</title>
+    <div style="text-align:center;">
+        <h3>Selecciona el perfil.</h3>
+        <form method="POST">{% csrf_token %}
+            <select name="nombre">
+            {% for perfil in perfiles %}
+                <option {% if perfil.selected %}selected{% endif %} value="{{perfil.id}}">{{perfil}}</option>
+            {% endfor %}
+            </select> 
+
+<br><br>
+
+        <p><input type="submit" value="Seleccionar"></p></form>
+
+    </div>
+{% endblock %}
