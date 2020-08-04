@@ -171,10 +171,15 @@ def ver_capitulos(request, pk):
         # que pertenecen al libro que recibo como parametro
         # (si hiciese objects.all() me estoy quedando con todos los capitulos de todos los libros)
 
+
+        perfil = perfil_actual(request)
+        leidos = list(perfil.leidos.values_list('id', flat=True))
+
         return render(request, "ver_capitulos.html", {"capitulos": capitulos,
                                 "libro": libro, "comentarios": comentarios,
                                 "comentario_form": comentario_form,
-                                "perfil_actual": perfil_actual(request)})
+                                "perfil_actual": perfil,
+                                "leidos": leidos})
     else:
         return redirect('/')  # si no se le subio capitulo te manda a index
 

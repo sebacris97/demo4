@@ -121,14 +121,14 @@
 
                         {% else %}
 		<br>
-                                <h5>No hay comentarios, se el primero</h3>
+                                <h5>No hay comentarios{% if libro.id in leidos %}, se el primero{% endif %}</h5>
 		<br>
                         {% endif %}
 
                         <br>
 
 
-
+{% if libro.id in leidos %}
                         <div class="row">
                                 <div class="col-md-12">
                                         <form method="POST">
@@ -139,7 +139,7 @@
                                         </form>
                                 </div>
                         <div>
-
+{% endif %}
 
 
 	</div>
