@@ -50,6 +50,7 @@ urlpatterns = [
                 
                 url(r'^logout/$', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
 
+                path('changepassword/', views.change_password, name='change_password'),
 
                 path('pagarSuscripcion/', views.pagarsuscripcion, name='pagarSuscripcion'),
                 path('premium/', views.pasarpremium, name='pasarPremium'),

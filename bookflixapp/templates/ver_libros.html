@@ -1,9 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+	{% if opcion == 'favoritos' %}
+		Favoritos
+	{% elif opcion == 'historial' %}
+		Historial
+	{% elif opcion == 'leidos' %}
+		Leidos
+	{% else %}
+		Libros
+	{% endif %}
+{% endblock %}
 
 {% block content %}
-
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
@@ -116,12 +126,12 @@
 
 <div id="products" class="row view-group">
 
-
                 {% for libro in filter.qs %}
                 <div class="item col-xs-4 col-lg-4">
+
                     <div class="thumbnail card" style="width:100%">
                         <div class="img-event"> 
-	            <a href="/verCapitulos/{{libro.id}}">
+	            <a href="{% url 'verCapitulos' libro.id %}">
                             <img class="group list-group-image img-fluid" style="width:100%;height:100%;" src="{{libro.get_imagen}}" 
 		onerror="this.onerror=null;this.src='{{MEDIA_URL}}/default.jpg';" alt="" />
 	            </a>
@@ -129,19 +139,607 @@
                         <div class="caption card-body" style="text-transform:capitalize;">
 
 
-	            
-		<h4 class="group card-title inner list-group-item-heading">
-	            	    <form method="POST">
-		      {% csrf_token %}
-		      <button type="submit" name="{{libro.id}}" style="outline:none;">
-			{% if libro.id in favoritos %}
-				<i class="fa fa-star" aria-hidden="true"></i>
+			<div class="form-group" style="position: relative; margin: 0 auto; text-align: center;">
+			   <h5 style="margin:0px;" class="group card-title inner list-group-item-heading">
+
+
+
+			{% if libro.id in leidos %}
+
+
+					{% if libro.get_calificacion >= 0 and libro.get_calificacion < 0.3 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 0.3 and libro.get_calificacion < 1 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 1 and libro.get_calificacion < 1.3 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 1.3 and libro.get_calificacion < 2 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 2 and libro.get_calificacion < 2.3 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 2.3 and libro.get_calificacion < 3 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 3 and libro.get_calificacion < 3.3 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 3.3 and libro.get_calificacion < 4 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 4 and libro.get_calificacion < 4.3 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion >= 4.3 and libro.get_calificacion < 5 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% elif libro.get_calificacion == 5 %}
+
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="1">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="1">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="2">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="2">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="3">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="3">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="4">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="4">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+	            	    		     <form method="POST" style="display:inline;">
+	            	       		         {% csrf_token %}
+				         <button type="submit" id="5">
+				     	<input type="hidden" name="id_libro" value="{{libro.id}}">
+				     	<input type="hidden" name="selected_rating" value="5">
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+				        </button>
+	            	    		     </form>
+
+					{% endif %}
+
 			{% else %}
-				<i class="fa fa-star-o" aria-hidden="true"></i>
+
+
+					{% if libro.get_calificacion >= 0 and libro.get_calificacion < 0.3 %}
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 0.3 and libro.get_calificacion < 1 %}
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 1 and libro.get_calificacion < 1.3 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 1.3 and libro.get_calificacion < 2 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 2 and libro.get_calificacion < 2.3 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+
+					{% elif libro.get_calificacion >= 2.3 and libro.get_calificacion < 3 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 3 and libro.get_calificacion < 3.3 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 3.3 and libro.get_calificacion < 4 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 4 and libro.get_calificacion < 4.3 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion >= 4.3 and libro.get_calificacion < 5 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star-half-o" aria-hidden="true"></i>
+
+					{% elif libro.get_calificacion == 5 %}
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+					<i id="estrella" class="fa fa-star" aria-hidden="true"></i>
+
+					{% endif %}
+
+			{% endif %}
+	
+				<span class="selected-rating">
+				{{ libro.get_calificacion | floatformat:'2' }}
+				</span>
+				<small> / 5</small>
+			   </h5>
+
+			{% if libro.id not in leidos %}
+			    <small class="text-muted" style="text-transform:none;">Debe leer el libro para poder calificarlo</small>
+			{% endif %}
+
+			</div>
+
+		<br>
+
+
+	            	    <form method="POST">
+	            	       {% csrf_token %}
+				
+		      <input type="hidden" name="id_libro" value="{{libro.id}}">
+		      <input type="hidden" name="opcion" value="FAVORITOS">
+
+		<h4 class="group card-title inner list-group-item-heading">
+		      <button type="submit" style="outline:none;">
+			{% if libro.id in favoritos %}
+				<i class="fa fa-heart" aria-hidden="true"></i>
+			{% else %}
+				<i class="fa fa-heart-o" aria-hidden="true"></i>
 			{% endif %}
 		      </button>
-		      <a href="/verCapitulos/{{libro.id}}"> {{libro.titulo}} </a>
 	            	    </form> 
+
+		      <a href="{% url 'verCapitulos' libro.id %}"> {{libro.titulo}} </a>
+
 		</h4>
 
 <style>
@@ -167,7 +765,7 @@ button{
                             <p class="group inner list-group-item-text">
                                 <strong>ISBN: </strong>{{libro.isbn}}</p>
                             <p style="text-transform:none;" class="group inner list-group-item-text">
-                                <strong>SINOPSIS: </strong>{{libro.get_texto}}</p>
+                                <strong>SINOPSIS: </strong>{{libro.texto}}</p>
 
 
                         </div>
@@ -182,6 +780,8 @@ button{
 		<br><br>
 		<h3 style="text-align:center;">No hay ninguna coincidencia<h3>
 	{% endif %}
+
+
 
 
 

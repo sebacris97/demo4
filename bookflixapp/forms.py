@@ -81,12 +81,12 @@ class ProfileForm(forms.ModelForm):
     def clean_tarjeta(self):
         tarjeta = self.cleaned_data.get("tarjeta")
         if tarjeta != "" and not tarjeta.isdigit():
-            raise forms.ValidationError("Tarjeta invalida")
+            raise forms.ValidationError("Tarjeta invalida, ingrese solo digitos")
         return tarjeta
 
     class Meta:
         model = Usuario
-        fields = ('tarjeta', 'fecha_de_nacimiento',)
+        fields = ('fecha_de_nacimiento', 'tarjeta',)
 
 
 class CreateProfileForm(forms.Form):

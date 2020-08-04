@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Modificar Datos{% endblock %}
+
 {% block content %}
 
 <title>Modificar datos</title>
@@ -20,7 +22,8 @@
      {{ form.as_p }}
      {{ p_form.as_p }}
      <br>
-     <button class="btn btn-primary" type="submit">Guardar</button>
+     <a href="/changepassword">Cambiar contraseña</a>
+     <button class="btn btn-primary float-right" type="submit">Guardar</button>
   </form>
 </div>
 

@@ -2,8 +2,9 @@
 
 {% load static %}
 
-{% block content %}
+{% block title %}Pagina de Inicio{% endblock %}
 
+{% block content %}
 
 <br>
 
@@ -19,14 +20,24 @@
 			<div class="card">
 				<div class="row">
 					<div class="col-12">
-					<small class="text-muted float-right">{{trailer.creacion}}</small>
-					</div>
+					<small style="padding: 0px 2px 2px 0px;" class="text-muted float-right">{{trailer.creacion}}</small>
+					</div> 
 				</div>
 				<div class="row">
 					
-					<div class="col-12"> <h4> {{trailer.titulo}} </h4>	
-						<img class="img-fluid img-thumbnail" src="{{trailer.get_imagen}}" style="width:150px;height:200px;"
-						onerror="this.onerror=null;this.src='{{MEDIA_URL}}/default.jpg';">
+					<div class="col-12"> 
+
+				{% if trailer.libro %} 
+					<a style="text-decoration: none;" href="{% url 'verCapitulos' trailer.libro.id %}">
+					<small class="text-muted">Ya disponible para leer</small>
+				{% endif %}
+
+					<h4> {{trailer.titulo}} </h4>
+
+
+			<p><img class="img-fluid img-thumbnail"src="{{trailer.get_imagen}}" style="width:150px;height:200px;"
+			onerror="this.onerror=null;this.src='{{MEDIA_URL}}/default.jpg';"></p></a>
+
 						
 						<p>{{trailer.texto|linebreaks}}</p>
 					</div>

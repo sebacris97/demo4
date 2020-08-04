@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from bookflixapp.models import Trailer, Libro, Novedad, Capitulo, Perfil, Usuario, Comentario
+from bookflixapp.models import Trailer, Libro, Novedad, Capitulo, Perfil, Usuario, Comentario, Calificacion
 from datetime import timedelta
 from django.utils import timezone
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 from django.contrib.auth.models import User
 from django.contrib.auth import hashers, authenticate
@@ -18,6 +18,14 @@ from django.db.models import F
 from django.contrib import messages
 
 from django.utils.datastructures import MultiValueDictKeyError
+
+
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
+
+from bookflix.settings import BASE_DIR as BASE
+
 
 # Create your views here.
 
@@ -36,23 +44,47 @@ def eliminar_favoritos(id_libro,perfil):
     libro = Libro.objects.filter(id=id_libro)
     perfil.favoritos.remove(*libro)
 
-        
+def handle_favorites(id_libro,perfil,favoritos):
+    if id_libro not in favoritos:
+        agregar_favoritos(id_libro,perfil)
+    else:
+        eliminar_favoritos(id_libro,perfil)    
+
+
+def handle_ratings(id_libro,perfil,nota,leidos):
+    libro = Libro.objects.get(id=id_libro)
+    if id_libro in leidos:
+        calificados = list(perfil.get_calificados.values_list('libro__id', flat=True))
+        if id_libro not in calificados:
+            calificacion = Calificacion.objects.create(nota=nota,perfil=perfil,libro=libro)
+        else:
+            calificacion = Calificacion.objects.get(libro__id=id_libro,perfil__id=perfil.id)
+            calificacion.nota = nota
+            calificacion.save(update_fields=['nota'])
+
+
 @login_required
 def ver_libros(request,choice=''):
+
     perfil = perfil_actual(request)
     favoritos = list(perfil.favoritos.values_list('id', flat=True))
+    leidos = list(perfil.leidos.values_list('id', flat=True))
     if request.method == 'POST':
-        id_libro = int(  list(request.POST.keys())[1]  )
-        #request.POST es un diccionario (dict_object) que en [0] tiene el csrf_token
-        #y en 1 el string del ID del libro que clickie (por eso hago el casteo a int)
-        if id_libro not in favoritos:
-            agregar_favoritos(id_libro,perfil)
+
+        id_libro = int( request.POST['id_libro'] )
+        
+        if request.POST.get('opcion') == 'FAVORITOS':
+            handle_favorites(id_libro,perfil, favoritos)
+       
         else:
-            eliminar_favoritos(id_libro,perfil)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            nota = int( request.POST['selected_rating'] )
+            handle_ratings(id_libro,perfil,nota,leidos)
+            
+        return HttpResponseRedirect(request.get_full_path())
         #para redirigir a la misma url donde estaba
+        #(que podria tener el resultado de una busqueda)
     
-    #favoritos, historial y ver libros son lo mismo, solo cambia el
+    #favoritos, historial, leidos y ver libros son lo mismo, solo cambia el
     #queryset que se muestra (por eso directamente resumi todo en un
     #parametro que determina el queryset elegido)
 
@@ -60,22 +92,35 @@ def ver_libros(request,choice=''):
         qs = perfil.favoritos
     elif choice == 'historial':
         qs = perfil.historial
+    elif choice == 'leidos':
+        qs = perfil.leidos
     else:
         qs = Libro.objects.all()
 
     filtro = LibroFilter(request.GET, queryset=qs)
 
-    return render(request, "ver_libros.html", {"filter": filtro,
-                                               "favoritos": favoritos})
+    context = {"filter": filtro,
+               "favoritos": favoritos,
+               "leidos": leidos,
+               "opcion": choice}
+
+    return render(request, "ver_libros.html", context)
 
 
 def action(request, pk_libro, pk_capitulo):
     libro = Libro.objects.filter(id=pk_libro)
     libro.update(contador=F('contador') + 1)
     capitulo = Capitulo.objects.get(id=pk_capitulo)
+    pdf_url = capitulo.pdf.url
     perfil = perfil_actual(request)
-    perfil.historial.add(*libro) #lo agrgo a la lista de libros leidos
-    return redirect(capitulo.pdf.url)
+    perfil.historial.add(*libro)  #lo agrego al historiral
+    if capitulo.ultimo:    #si es el ultimo capitulo
+        perfil.leidos.add(*libro)   #lo agrego a leidos
+        
+    with open(BASE+'\\'+pdf_url, 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+        return response
 
 
 def do_comment(request,form, libro):
@@ -456,7 +501,7 @@ def modificardatos(request):
     usuario = Usuario.objects.get(user=user)
 
     if request.method == 'POST':
-        print("hola")
+
         form = EditProfileForm(request.POST, instance=user, user=user)
         profile_form = ProfileForm(request.POST, instance=usuario)
 
@@ -475,12 +520,9 @@ def modificardatos(request):
             user.username               = email
             user.save()
             usuario.save()
-            #user_form = form.save()
-            #custom_form = profile_form.save(False)
-            #custom_form.user = user_form
-            #custom_form.save()
             
-            return redirect('/verDatos')
+            return HttpResponseRedirect('/verDatos')
+        
     else:
         form = EditProfileForm(instance=request.user, user=user)
         profile_form = ProfileForm(instance=usuario)
@@ -510,4 +552,15 @@ def borrarusuario(request):
     return render(request, 'borrar_usuario.html', {'form': form, 'user': user})
 
 
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return HttpResponseRedirect('/verDatos')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'modf_password.html', {'form': form})
 
